@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from "axios"
 import './App.css'
+import BatteryHandler from './components/batteryHandler'
 
 function App() {
   const [data, setData] = useState(null)
@@ -34,6 +35,9 @@ function App() {
       ) : (
         <p>Loading data...</p>
       )}
+    </div>
+    <div>
+      <BatteryHandler />
     </div>
     </>
   )
