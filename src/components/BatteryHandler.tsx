@@ -22,7 +22,7 @@ function BatteryHandler() {
 
   return (
     <div>
-        <p>Batterylife: {batterylife}%</p>
+        <p>State of charge: {batterylife}%</p>
     </div>
   )
 }
