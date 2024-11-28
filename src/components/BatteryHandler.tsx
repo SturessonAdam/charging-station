@@ -4,6 +4,7 @@ import axios from "axios";
 function BatteryHandler() {
     const [batterylife, setBatterylife] = useState(null)
     const [charge, setCharge] = useState(false);
+    const [resetCharge, setResetCharge] = useState(false);
 
     //API anrop för att hämta batteri %
     useEffect(() => {
@@ -30,11 +31,37 @@ function BatteryHandler() {
             .catch(error => console.log(error));
     };
 
+    const stopCharge = () => {
+        axios.post('http://127.0.0.1:5000/charge', {
+            "charging" : "off"
+        })
+            .then(() => {
+                setCharge(false);
+            })
+            .catch(error => console.log(error));
+    };
+
+    const resetBattery = () => {
+        axios.post('http://127.0.0.1:5000/discharge', {
+            "discharging" : "on"
+        })
+            .then(() => {
+                setResetCharge(true);
+            })
+            .catch(error => console.log(error));
+    };
+
   return (
     <div>
         <p>State of charge: {batterylife}%</p>
         <button onClick={startCharge} disabled={charge}>
             Start Charge
+        </button>
+        <button onClick={stopCharge} disabled={!charge}>
+            Stop Charge
+        </button>
+        <button onClick={resetBattery}>
+            Reset Battery
         </button>
     </div>
   )
