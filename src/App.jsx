@@ -31,8 +31,6 @@ function App() {
       .catch(error => console.log(error));
   }, []);
 
-  //if (!baseload) return <div>No data</div>
-
   return (
     <>
      <div>
@@ -50,12 +48,13 @@ function App() {
     <div>
       <BatteryHandler />
     </div>
-    <div>
+    <div className='baseload'>
+      <h3>Kwh per hour on the day</h3>
       {baseload ? (
-      <ul>
+      <div>
         {baseload.map((Kwh, index) =>
-         <li key={index}>Hour {index} : {Kwh}</li>)}
-      </ul>
+         <p key={index}>clock {index}:00 : {Kwh}Kwh</p>)}
+      </div>
       ) : (
         <p>Loading data...</p>
       )}
