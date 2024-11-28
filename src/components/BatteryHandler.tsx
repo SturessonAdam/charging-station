@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from "axios";
 
 function BatteryHandler() {
-    const [batterylife, setBatterylife] = useState(null)
+    const [batterylife, setBatterylife] = useState(20) //batteriet startar alltid på 20
     const [charge, setCharge] = useState(false);
     const [resetCharge, setResetCharge] = useState(false);
 
@@ -19,6 +19,12 @@ function BatteryHandler() {
       const interval = setInterval(fetchData, 1000);
       return () => clearInterval(interval);
       }, []);
+
+    useEffect(() => {
+        if (charge && batterylife >= 80) {
+            stopCharge();
+        }
+    }, [batterylife, charge]);
 
     //API anrop för att starta laddningen
     const startCharge = () => {
