@@ -5,6 +5,7 @@ import BatteryHandler from './components/batteryHandler'
 
 function App() {
   const [data, setData] = useState(null)
+  const [baseload, setBaseload] = useState(null)
 
   useEffect(() => {
     const fetchData = () => {
@@ -22,6 +23,16 @@ function App() {
   return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    axios.get('http://127.0.0.1:5000/baseload')
+      .then(response => {
+        setBaseload(response.data)
+      })
+      .catch(error => console.log(error));
+  }, []);
+
+  //if (!baseload) return <div>No data</div>
+
   return (
     <>
      <div>
@@ -38,6 +49,16 @@ function App() {
     </div>
     <div>
       <BatteryHandler />
+    </div>
+    <div>
+      {baseload ? (
+      <ul>
+        {baseload.map((Kwh, index) =>
+         <li key={index}>Hour {index} : {Kwh}</li>)}
+      </ul>
+      ) : (
+        <p>Loading data...</p>
+      )}
     </div>
     </>
   )
