@@ -33,31 +33,34 @@ function App() {
 
   return (
     <>
-     <div>
-      {data ? (
-        <div>
-          <p>Simulated time: {data.sim_time_hour}:{data.sim_time_min}</p>
-          <p>Baseload: {data.base_current_load} kWh</p>
-          <p>Battery capacity: {data.battery_capacity_kWh} kWh</p>
-          <p>Charging? {data.ev_battery_charge_start_stopp ? 'Yes' : 'No'}</p>
-        </div>
-      ) : (
-        <p>Loading data...</p>
-      )}
-    </div>
-    <div>
-      <BatteryHandler />
-    </div>
-    <div className='baseload'>
-      <h3>Kwh per hour on the day</h3>
-      {baseload ? (
-      <div>
-        {baseload.map((Kwh, index) =>
-         <p key={index}>clock {index}:00 : {Kwh}Kwh</p>)}
+    <div className="info-container">
+      <div className="info-content">
+        {data ? (
+          <>
+            <p>Simulated time: {data.sim_time_hour}:{data.sim_time_min}</p>
+            <p>Baseload: {data.base_current_load} kWh</p>
+            <p>Battery capacity: {data.battery_capacity_kWh} kWh</p>
+            <p>Charging? {data.ev_battery_charge_start_stopp ? 'Yes' : 'No'}</p>
+            <div className="button-container">
+              <BatteryHandler />
+            </div>
+          </>
+        ) : (
+          <p>Loading data...</p>
+        )}
       </div>
-      ) : (
-        <p>Loading data...</p>
-      )}
+      <div className="baseload">
+        <h3>Kwh per hour on the day</h3>
+        {baseload ? (
+          <div>
+            {baseload.map((Kwh, index) => (
+              <p key={index}>clock {index}:00 = {Kwh}Kwh</p>
+            ))}
+          </div>
+        ) : (
+          <p>Loading data...</p>
+        )}
+      </div>
     </div>
     </>
   )
