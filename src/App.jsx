@@ -50,7 +50,7 @@ function App() {
         )}
       </div>
       <div className="baseload">
-        <h3>Kwh per hour on the day</h3>
+        <h3>Baseload residential Kwh</h3>
         {baseload ? (
           <div>
             {baseload.map((Kwh, index) => (
