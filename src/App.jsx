@@ -6,6 +6,7 @@ import BatteryHandler from './components/batteryHandler'
 function App() {
   const [data, setData] = useState(null)
   const [baseload, setBaseload] = useState(null)
+  const [pph, setPph] = useState(null)
 
   useEffect(() => {
     const fetchData = () => {
@@ -27,6 +28,14 @@ function App() {
     axios.get('http://127.0.0.1:5000/baseload')
       .then(response => {
         setBaseload(response.data)
+      })
+      .catch(error => console.log(error));
+  }, []);
+
+  useEffect(() => {
+    axios.get('http://127.0.0.1:5000/priceperhour')
+      .then(response => {
+        setPph(response.data)
       })
       .catch(error => console.log(error));
   }, []);
