@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import axios from "axios"
 import './App.css'
-import BatteryHandler from './components/batteryHandler'
+import BatteryHandler from './components/BatteryHandler'
 
 function App() {
   const [data, setData] = useState(null)
   const [baseload, setBaseload] = useState([])
   const [hourprice, setHourprice] = useState([])
-  const [omptimalhour, setOptimalhour] = useState([]);
+  const [optimalhour, setOptimalhour] = useState([]);
 
   useEffect(() => {
     const fetchData = () => {
@@ -20,7 +20,7 @@ function App() {
 
   fetchData();
 
-  const interval = setInterval(fetchData, 1000);
+  const interval = setInterval(fetchData, 500);
 
   return () => clearInterval(interval);
   }, []);
@@ -51,7 +51,7 @@ function App() {
         }
       }
       bestTimes.sort((a, b) => a.price - b.price);
-      const cheapest = bestTimes.slice(0, 3); //de 3 bästa timmarna att ladda på
+      const cheapest = bestTimes.slice(0, 4); //de 3 bästa timmarna att ladda på
       setOptimalhour(cheapest);
     }
   }, [baseload, hourprice]);
@@ -67,7 +67,7 @@ function App() {
             <p>Battery capacity: {data.battery_capacity_kWh} kWh</p>
             <p>Charging? {data.ev_battery_charge_start_stopp ? 'Yes' : 'No'}</p>
             <div className="button-container">
-              <BatteryHandler />
+              <BatteryHandler optimalhour={optimalhour} />
             </div>
           </>
         ) : (
@@ -100,9 +100,9 @@ function App() {
       </div>
       <div className="besthours">
         <h3>Best charging hours</h3>
-        {omptimalhour ? (
+        {optimalhour ? (
           <div>
-            {omptimalhour.map((hour, index) => (
+            {optimalhour.map((hour, index) => (
               <p key={index}>clock {hour.hour}:00 = {hour.price}</p>
             ))}
           </div>
