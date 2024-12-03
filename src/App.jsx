@@ -5,8 +5,9 @@ import BatteryHandler from './components/batteryHandler'
 
 function App() {
   const [data, setData] = useState(null)
-  const [baseload, setBaseload] = useState(null)
-  const [hourprice, setHourprice] = useState(null)
+  const [baseload, setBaseload] = useState([])
+  const [hourprice, setHourprice] = useState([])
+  const [omptimalhour, setOptimalhour] = useState([]);
 
   useEffect(() => {
     const fetchData = () => {
@@ -39,6 +40,21 @@ function App() {
       })
       .catch(error => console.log(error));
   }, []);
+
+  useEffect(() =>{
+    if(baseload.length > 0 && hourprice.length > 0) {
+      const bestTimes = [];
+      for (let i = 0; i < baseload.length; i++) {
+        const totalConsumption = baseload[i] + 7.4; //laddstationen drar 7.4Kwh
+        if (totalConsumption <= 11) { //får inte överstiga 11Kwh
+          bestTimes.push({ hour: i, price: hourprice[i]});
+        }
+      }
+      bestTimes.sort((a, b) => a.price - b.price);
+      const cheapest = bestTimes.slice(0, 3); //de 3 bästa timmarna att ladda på
+      setOptimalhour(cheapest);
+    }
+  }, [baseload, hourprice]);
 
   return (
     <>
@@ -76,6 +92,18 @@ function App() {
           <div>
             {hourprice.map((price, index) => (
               <p key={index}>clock {index}:00 = {price}</p>
+            ))}
+          </div>
+        ) : (
+          <p>Loading data...</p>
+        )}
+      </div>
+      <div className="besthours">
+        <h3>Best charging hours</h3>
+        {omptimalhour ? (
+          <div>
+            {omptimalhour.map((hour, index) => (
+              <p key={index}>clock {hour.hour}:00 = {hour.price}</p>
             ))}
           </div>
         ) : (
