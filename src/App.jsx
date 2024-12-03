@@ -59,11 +59,23 @@ function App() {
         )}
       </div>
       <div className="baseload">
-        <h3>Baseload residential Kwh</h3>
+        <h3>Residential Kwh</h3>
         {baseload ? (
           <div>
             {baseload.map((Kwh, index) => (
               <p key={index}>clock {index}:00 = {Kwh}Kwh</p>
+            ))}
+          </div>
+        ) : (
+          <p>Loading data...</p>
+        )}
+      </div>
+      <div className="priceperhour">
+        <h3>Price per hour</h3>
+        {hourprice ? (
+          <div>
+            {hourprice.map((price, index) => (
+              <p key={index}>clock {index}:00 = {price}</p>
             ))}
           </div>
         ) : (
