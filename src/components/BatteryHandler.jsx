@@ -108,7 +108,7 @@ function BatteryHandler({ optimalhour }) {
         </>
         )}
         <button onClick={resetBattery}>
-        Reset Battery
+        Reset Server
         </button>
     </div>
   )
