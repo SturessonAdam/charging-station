@@ -7,6 +7,7 @@ function App() {
   const [data, setData] = useState(null)
   const [baseload, setBaseload] = useState([])
   const [hourprice, setHourprice] = useState([])
+  const [showExplanation, setShowExplanation] = useState(false);
 
   useEffect(() => {
     const fetchData = () => {
@@ -104,6 +105,20 @@ function App() {
             {optimalhour.map((hour, index) => (
               <p key={index}>clock {hour.hour}:00 = {hour.price}</p>
             ))}
+          <button 
+            className="info-button" 
+            onClick={() => setShowExplanation(!showExplanation)}
+          >
+            ❔
+          </button>
+            {showExplanation && (
+              <div>
+                <h3>Explanation</h3>
+                <p>- Iterates baseload, adding 7.4(kWh)</p>
+                <p>- Sorts everything equal to or under 11(kWh)</p>
+                <p>- Picks the 4 best times compared to price per hour</p>
+              </div>
+            )}
           </div>
         ) : (
           <p>Loading data...</p>
