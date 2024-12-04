@@ -95,14 +95,20 @@ function BatteryHandler({ optimalhour }) {
   return (
     <div>
         <p>State of charge: {batterylife}%</p>
-        <button onClick={startCharge} disabled={charge}>
+        {batterylife >= 80 ? (
+        <p><strong>Battery is full</strong></p>
+        ) : (
+        <>
+            <button onClick={startCharge} disabled={charge}>
             Start Charge
-        </button>
-        <button onClick={stopCharge} disabled={!charge}>
+            </button>
+            <button onClick={stopCharge} disabled={!charge}>
             Stop Charge
-        </button>
+            </button>
+        </>
+        )}
         <button onClick={resetBattery}>
-            Reset Battery
+        Reset Battery
         </button>
     </div>
   )
