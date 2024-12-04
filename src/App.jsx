@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import axios from "axios"
 import './App.css'
 import BatteryHandler from './components/BatteryHandler'
@@ -7,7 +7,6 @@ function App() {
   const [data, setData] = useState(null)
   const [baseload, setBaseload] = useState([])
   const [hourprice, setHourprice] = useState([])
-  const [optimalhour, setOptimalhour] = useState([]);
 
   useEffect(() => {
     const fetchData = () => {
@@ -41,19 +40,19 @@ function App() {
       .catch(error => console.log(error));
   }, []);
 
-  useEffect(() =>{
-    if(baseload.length > 0 && hourprice.length > 0) {
+  const optimalhour = useMemo(() => {
+    if (baseload.length > 0 && hourprice.length > 0) {
       const bestTimes = [];
       for (let i = 0; i < baseload.length; i++) {
-        const totalConsumption = baseload[i] + 7.4; //laddstationen drar 7.4Kwh
-        if (totalConsumption <= 11) { //får inte överstiga 11Kwh
-          bestTimes.push({ hour: i, price: hourprice[i]});
+        const totalConsumption = baseload[i] + 7.4; //laddstationen drar 7.4kwh
+        if (totalConsumption <= 11) { //ska inte överskrida 11kwh 
+          bestTimes.push({ hour: i, price: hourprice[i] });
         }
       }
       bestTimes.sort((a, b) => a.price - b.price);
-      const cheapest = bestTimes.slice(0, 4); //de 3 bästa timmarna att ladda på
-      setOptimalhour(cheapest);
+      return bestTimes.slice(0, 4); //top 4 bästa tiderna att ladda på
     }
+    return [];
   }, [baseload, hourprice]);
 
   return (
