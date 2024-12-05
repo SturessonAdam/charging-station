@@ -69,12 +69,27 @@ function BatteryHandler({ optimalhour, baseload }) {
                 .map((load, index) => ({ hour: index, load }))
                 .sort((a, b) => a.load - b.load)
                 .slice(0, 4); //väljer de 4 lägsta timmarna baserat på baseload
-            
-            const canCharge = lowestHours.every(hour => hour.load + 7.4 <= 11); //kontrollerar om det är under 11 kWh
-            
+    
+            const canCharge = lowestHours.every(hour => hour.load + 7.4 <= 11); //kontrollera om det är under 11 kWh
+            console.log(lowestHours)
+    
             if (canCharge && batterylife < 80) {
                 setManualCharge(true);
                 startCharge();
+                
+                const interval = setInterval(() => {
+                    const currentHour = data.sim_time_hour;
+                    const isCurrentHourLowest = lowestHours.some(hour => hour.hour === currentHour);
+    
+                    if (!isCurrentHourLowest && charge) {
+                        stopCharge();
+                    } else if (isCurrentHourLowest && !charge && batterylife < 80) {
+                        startCharge();
+                    }
+                    if (batterylife >= 80 || !manualCharge) {
+                        clearInterval(interval);
+                    }
+                }, 500);
             } else {
                 console.log("Kan inte starta laddning, kriterierna uppfylls inte.");
             }
