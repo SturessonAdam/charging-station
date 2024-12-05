@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from "axios";
 
-function BatteryHandler({ optimalhour }) {
+function BatteryHandler({ optimalhour, baseload }) {
     const [batterylife, setBatterylife] = useState(20) //batteriet startar alltid på 20
     const [charge, setCharge] = useState(false);
     const [resetCharge, setResetCharge] = useState(false);
@@ -60,6 +60,22 @@ function BatteryHandler({ optimalhour }) {
         return () => clearInterval(interval);
     }, [data, optimalhour, charge, batterylife]);
 
+    const manualChargeLowestLoad = () => {
+        if (baseload.length > 0) {
+            const lowestHours = baseload
+                .map((load, index) => ({ hour: index, load }))
+                .sort((a, b) => a.load - b.load)
+                .slice(0, 4); //väljer de 4 lägsta timmarna baserat på baseload
+            
+            const canCharge = lowestHours.every(hour => hour.load + 7.4 <= 11); //kontrollerar om det är under 11 kWh
+            
+            if (canCharge && batterylife < 80) {
+                startCharge();
+            } else {
+                console.log("Kan inte starta laddning, kriterierna uppfylls inte.");
+            }
+        }
+    };
 
     //API anrop för att starta laddningen
     const startCharge = () => {
@@ -109,6 +125,9 @@ function BatteryHandler({ optimalhour }) {
         )}
         <button onClick={resetBattery}>
         Reset Server
+        </button>
+        <button onClick={manualChargeLowestLoad}>
+        Charge on Lowest Baseload Hours
         </button>
     </div>
   )

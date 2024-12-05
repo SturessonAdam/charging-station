@@ -67,7 +67,7 @@ function App() {
             <p>Battery capacity: {data.battery_capacity_kWh} kWh</p>
             <p>Charging? {data.ev_battery_charge_start_stopp ? 'Yes' : 'No'}</p>
             <div className="button-container">
-              <BatteryHandler optimalhour={optimalhour} />
+              <BatteryHandler optimalhour={optimalhour} baseload={baseload}/>
             </div>
           </>
         ) : (
