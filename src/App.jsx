@@ -45,8 +45,8 @@ function App() {
     if (baseload.length > 0 && hourprice.length > 0) {
       const bestTimes = [];
       for (let i = 0; i < baseload.length; i++) {
-        const totalConsumption = baseload[i] + 7.4; //laddstationen drar 7.4kwh
-        if (totalConsumption <= 11) { //ska inte överskrida 11kwh 
+        const totalConsumption = baseload[i] + 7.4; //laddstationen drar 7.4kWh
+        if (totalConsumption <= 11) { //ska inte överskrida 11kWh 
           bestTimes.push({ hour: i, price: hourprice[i] });
         }
       }
@@ -75,11 +75,11 @@ function App() {
         )}
       </div>
       <div className="baseload">
-        <h3>Residential Kwh</h3>
+        <h3>Residential kWh</h3>
         {baseload ? (
           <div>
-            {baseload.map((Kwh, index) => (
-              <p key={index}>clock {index}:00 = {Kwh}Kwh</p>
+            {baseload.map((kWh, index) => (
+              <p key={index}>clock {index}:00 = {kWh}kWh</p>
             ))}
           </div>
         ) : (
