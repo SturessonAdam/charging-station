@@ -6,6 +6,7 @@ function BatteryHandler({ optimalhour, baseload }) {
     const [charge, setCharge] = useState(false);
     const [resetCharge, setResetCharge] = useState(false);
     const [data, setData] = useState([]);
+    const [manualCharge, setManualCharge] = useState(false);
 
     //API anrop för att hämta batteri %
     useEffect(() => {
@@ -46,6 +47,8 @@ function BatteryHandler({ optimalhour, baseload }) {
 
     useEffect(() => {
         const checkAndStartCharge = () => {
+            if (manualCharge) return;
+
             const currentHour = data.sim_time_hour;
             const bestHours = Array.isArray(optimalhour) ? optimalhour.map(hour => hour.hour) : [];
     
@@ -70,6 +73,7 @@ function BatteryHandler({ optimalhour, baseload }) {
             const canCharge = lowestHours.every(hour => hour.load + 7.4 <= 11); //kontrollerar om det är under 11 kWh
             
             if (canCharge && batterylife < 80) {
+                setManualCharge(true);
                 startCharge();
             } else {
                 console.log("Kan inte starta laddning, kriterierna uppfylls inte.");
@@ -94,6 +98,9 @@ function BatteryHandler({ optimalhour, baseload }) {
         })
             .then(() => {
                 setCharge(false);
+                if (manualCharge) {
+                    setManualCharge(false);
+                }
             })
             .catch(error => console.log(error));
     };
@@ -103,7 +110,7 @@ function BatteryHandler({ optimalhour, baseload }) {
             "discharging" : "on"
         })
             .then(() => {
-                setResetCharge(true);
+                setManualCharge(false);
             })
             .catch(error => console.log(error));
     };
