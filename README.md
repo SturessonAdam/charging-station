@@ -1,8 +1,7 @@
-# React + Vite
+Examineringsuppgift i Battery Management Services, ett frontned som kommunicerar med en lokal backend i Pyhton.
+Programmet simulerar en elbil som står och laddar vid sitt hushåll i 24h, programmet räknar sedan ut de bästa timmarna för bilen att ladda på
+och sätter på/stänger av laddningen vid de optimala tiderna baserat på hushållets elförbrukning och elens prissättning i elområde 3, Sverige.
+Batteriet startar på 20% och laddas upp till ca 80%.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Backenden simulerar ett dygn där 1h motsvarar 4 sekunder i reel tid.
+Backend: https://github.com/SturessonAdam/py-chargingsimulation.
